@@ -3,14 +3,14 @@ const generateRandomNumber = (min:number, max:number) => Math.floor(Math.random(
 export const sentenceList = {
     "easy": [
         `Once upon a time, a curious cat discovered ${generateRandomNumber(1, 9)} hidden`,
-        `toys under the couch, much to its delight. The cat played`,
-        `with them for hours, enjoying every moment. One day, the`,
-        `toys began to mysteriously move on their own, adding`,
-        `an element of excitement to the cat's adventures.`,
+        `Toys under the couch, much to its delight. The cat played`,
+        `With them for hours, enjoying every moment. One day, the`,
+        `Toys began to mysteriously move on their own, adding`,
+        `An element of excitement to the cat's adventures.`,
 
         `On a sunny day, she went to the market and came`,
-        `back with ${generateRandomNumber(1, 20)} juicy apples, perfect for a pie. She`,
-        `shared the pie with her friends, and everyone was delighted.`,
+        `Back with ${generateRandomNumber(1, 20)} juicy apples, perfect for a pie. She`,
+        `Shared the pie with her friends, and everyone was delighted.`,
         `They spent the afternoon playing games and talking about`,
         `their plans for the upcoming holidays.`,
 

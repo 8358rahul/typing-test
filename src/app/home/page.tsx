@@ -56,7 +56,7 @@ const TypingTestPage = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isTestActive) {
       startTimer();
-    } 
+    }
 
     const value = e.target.value;
     setInputValue(value);
@@ -89,7 +89,7 @@ const TypingTestPage = () => {
     setAccuracy(newAccuracy);
   };
 
- 
+
 
   // Reset paragraph styling when the test ends
   useEffect(() => {
@@ -108,20 +108,25 @@ const TypingTestPage = () => {
     setCurrentCharIndex(0);
     clearInterval(intervalRef.current as NodeJS.Timeout);
     setTimer(time);
-    setShowResult(false);
     setWpm(0);
     setAccuracy(100);
+    setShowResult(false);
+    inputRef.current?.focus();
   };
 
+  // console.log("paragraph", paragraph);
 
   return (
-    <main
-      className="flex flex-col min-h-screen items-center px-60 bg-gradient-to-br from-gray-100 to-gray-300"
-      onClick={() => inputRef.current?.focus()}
-    >
+    <>
+      <Navbar timer={timer} time={time} onPress={onPress} />
 
-      {/* Background Image */}
-      {/* <div
+      <main
+        className="flex flex-col min-h-screen items-center px-60 bg-gradient-to-br from-gray-100 to-gray-300"
+        onClick={() => inputRef.current?.focus()}
+      >
+
+        {/* Background Image */}
+        {/* <div
         className="absolute top-0 left-0 w-full h-full z-0 bg-cover bg-center opacity-30"
         
         style={{ backgroundImage: "url('/keyboard.png')",
@@ -131,66 +136,73 @@ const TypingTestPage = () => {
       }}
       /> */}
 
-      <Navbar timer={timer} time={time} onPress={onPress} />
 
-      <div className="relative z-10 w-full">  
-        {/* Paragraph Display */}
-        {paragraph?.length > 0 ? <TypingParagraph paragraph={paragraph} inputValue={inputValue} currentCharIndex={currentCharIndex} inputRef={inputRef} /> : <div className="text-3xl font-bold text-gray-800 mb-4">Loading...</div>}
+        <div className="relative z-10 w-full mt-3">
+          {/* Paragraph Display */}
+          {paragraph?.length > 0 ?
+            <TypingParagraph
+              paragraph={paragraph}
+              inputValue={inputValue}
+              currentCharIndex={currentCharIndex}
+              inputRef={inputRef}
+            />
+            : <div className="text-3xl font-bold text-gray-800 mb-4">Loading...</div>}
 
-        {/* Hidden Input Field */}
-        <input
-          ref={inputRef}
-          type="text"
-          className="w-0 h-0 opacity-0  "
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              setInputValue(inputValue + "\n");
-            }
-          }}
-          disabled={!isTestActive && timer === 0}
-        />
-      </div>
-      
-      {/* Result Dialog */}
-      {showResult  && (
-        <div className="
+          {/* Hidden Input Field */}
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-0 h-0 opacity-0  "
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setInputValue(inputValue + "\n");
+              }
+            }}
+            disabled={!isTestActive && timer === 0}
+          />
+        </div>
+
+        {/* Result Dialog */}
+        {showResult && ( <div className="
           fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50
 
-        ">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Typing Test Complete!
-            </h2>
-            <p className="text-gray-700 mb-2">
-              You typed the {Math.floor(time / 60)}-minute typing test.
-            </p>
-            <p className="text-gray-700 mb-4">
-              Your speed was{" "}
-              <span className="font-bold text-gray-900">{wpm} WPM</span> with an
-              accuracy of{" "}
-              <span className="font-bold text-gray-900">{accuracy}%</span>.
-            </p>
-            <button
-              onClick={() => router.back()}
-              className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all"
-            >
-              Try Again
-            </button>
-            {/* Quiz Button */}
-            <button
-              onClick={() => {
-                router.replace("/quiz");
-              }}
-              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
-            >
-              Take the Quiz
-            </button>
+        "
+          >
+            <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                Typing Test Complete!
+              </h2>
+              <p className="text-gray-700 mb-2">
+                You typed the {Math.floor(time / 60)}-minute typing test.
+              </p>
+              <p className="text-gray-700 mb-4">
+                Your speed was{" "}
+                <span className="font-bold text-gray-900">{wpm} WPM</span> with an
+                accuracy of{" "}
+                <span className="font-bold text-gray-900">{accuracy}%</span>.
+              </p>
+              <button
+                onClick={() => router.back()}
+                className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all"
+              >
+                Try Again
+              </button>
+              {/* Quiz Button */}
+              <button
+                onClick={() => {
+                  router.replace("/quiz");
+                }}
+                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
+              >
+                Take the Quiz
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </main>
+        )}
+      </main>
+    </>
   );
 };
 

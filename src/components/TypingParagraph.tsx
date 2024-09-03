@@ -6,21 +6,27 @@ interface TypingParagraphProps {
     currentCharIndex: number;
     inputRef: React.RefObject<HTMLInputElement>;
 }
-
-
+ 
 function TypingParagraph(props: TypingParagraphProps) {
-    const { paragraph, inputValue, currentCharIndex, inputRef } = props;
-
+    const { paragraph, inputValue, currentCharIndex, inputRef } = props; 
+ 
+   
+ 
     return (
-        <div
-            className="
-             rounded-lg p-3 overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100 font-mono shadow-inner  
+        <div 
+        className="
+        
+             rounded-lg p-3 
+              bg-gradient-to-br from-gray-50 to-gray-100 font-mono shadow-inner  
               max-h-96"
             onClick={() => inputRef.current?.focus()}
-            style={{ userSelect: 'none', outline: 'none',
-            
-        
-        }}
+            style={{
+                userSelect: 'none', 
+                outline: 'none',  
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none', 
+                overflowY:   'auto' ,   
+            }}
 
         >
             {paragraph.split('').map((char, index) => {
@@ -31,8 +37,8 @@ function TypingParagraph(props: TypingParagraphProps) {
                         : 'bg-red-200 text-red-800 rounded font-semibold line-through px-1';
                 } else if (index === currentCharIndex) {
                     style = 'text-blue-500 font-bold px-1 underline';
-                }
-
+                } 
+ 
                 return (
                     <span
                         key={index}

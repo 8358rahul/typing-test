@@ -5,10 +5,14 @@ export const generateParagraph = (level: 'easy' | 'medium' | 'hard') => {
     let paragraph = '';
      
     const shuffledSentences = shuffleArray(sentences.slice());   
-    for (let i = 0; i < shuffledSentences.length; i++) { 
-        paragraph += `${shuffledSentences[i]} `;
+    for (let i = 0; i < shuffledSentences.length; i++) {  
+        // i want to start every sentence with a capital letter
+        const sentence = shuffledSentences[i].charAt(0).toUpperCase() + shuffledSentences[i].slice(1);
+        paragraph += sentence + ' ';
+        
+       
     } 
-    
+     
     return paragraph.trim();
 }; 
  
