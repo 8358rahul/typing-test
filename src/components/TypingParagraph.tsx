@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-
+ 
 interface TypingParagraphProps {
     paragraph: string;
     inputValue: string;
@@ -8,9 +7,7 @@ interface TypingParagraphProps {
 }
  
 function TypingParagraph(props: TypingParagraphProps) {
-    const { paragraph, inputValue, currentCharIndex, inputRef } = props; 
- 
-   
+    const { paragraph, inputValue, currentCharIndex, inputRef } = props;  
  
     return (
         <div 

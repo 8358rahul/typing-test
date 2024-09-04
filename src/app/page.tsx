@@ -3,14 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
-const page = () => {
+const Page = () => {
   const [selectedTime, setSelectedTime] = useState<number>(60);
   const [selectedLevel, setSelectedLevel] = useState<"easy" | "medium" | "hard">("easy");
 
 
   return (
     <main>
-      <Navbar register />
+      <Navbar hideBack  />
       <div
         className="relative flex flex-col items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300 h-[100vh]">
         {/* Background Video */}
@@ -27,7 +27,7 @@ const page = () => {
         {/* Content on top of the video */}
         <div className="relative z-10 flex flex-col items-center text-center">
 
-          <h1 className="text-5xl font-bold mb-8 text-white tracking-wider">
+          <h1 className="text-5xl font-bold mb-6 text-white tracking-wider">
             Check your typing skills in a minute
           </h1>
 
@@ -72,8 +72,7 @@ const page = () => {
 
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-row gap-5">
+          {/* Buttons */} 
             <Link
               href={{
                 pathname: '/home',
@@ -83,16 +82,8 @@ const page = () => {
             >
               Start Test
             </Link>
-            <Link
-              href={{ pathname: '/quiz' }}
-              className=" w-36 border bg-blue-800 text-white py-3  rounded-lg text-md font-semibold hover:bg-blue-700 transition-all"
-            >
-              Take Quiz
-            </Link>
-          </div>
-
-
-        </div>
+             
+          </div> 
       </div>
     </main>
 
@@ -100,4 +91,4 @@ const page = () => {
 
 }
 
-export default page
+export default Page

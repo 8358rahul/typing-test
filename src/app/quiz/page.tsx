@@ -1,4 +1,5 @@
 'use client';
+import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -17,7 +18,7 @@ const quizData = [
   // Add more questions here
 ];
 
-const QuizComponent = () => {
+const Page = () => {
   const router = useRouter();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -59,7 +60,10 @@ const QuizComponent = () => {
   
 
   return (
-    <main className="flex flex-col min-h-screen justify-center items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300">
+    <>
+         <Navbar />
+    
+    <main className="flex flex-col min-h-screen items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300">
       <h1 className="text-center text-5xl font-bold mb-8 text-purple-800 tracking-wider">
         Quiz App
       </h1>
@@ -134,7 +138,8 @@ const QuizComponent = () => {
         )
       }
     </main>
+    </>
   );
 };
 
-export default QuizComponent;
+export default Page;

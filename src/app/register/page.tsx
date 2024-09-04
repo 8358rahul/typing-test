@@ -1,9 +1,20 @@
+import Navbar from '@/components/Navbar'
 import React from 'react'
 
-function page() {
+function Page() {
   return (
-    <div>page</div>
+    <div> 
+            <Navbar />
+            
+      <main
+        className="flex flex-col min-h-screen items-center px-60 bg-gradient-to-br from-gray-100 to-gray-300"
+      
+      >
+register page
+      </main>
+
+    </div>
   )
 }
 
-export default page
+export default Page

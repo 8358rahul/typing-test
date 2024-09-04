@@ -5,7 +5,7 @@ import { generateParagraph } from "@/lib/generateParagraph";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 
-const TypingTestPage = () => {
+const Page = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const time = Number(searchParams.get("selectedTime"));
@@ -29,9 +29,19 @@ const TypingTestPage = () => {
 
   // Generate a new paragraph based on the selected difficulty level
   useEffect(() => {
-    onPress()
+    const res = generateParagraph(selectedLevel);
+    setParagraph(res);
+    setSelectedLevel(level);
+    setIsTestActive(false);
+    setInputValue("");
+    setCurrentCharIndex(0);
+    clearInterval(intervalRef.current as NodeJS.Timeout);
+    setTimer(time);
+    setWpm(0);
+    setAccuracy(100);
+    setShowResult(false);
     inputRef.current?.focus();
-  }, [searchParams, selectedLevel]);
+  }, [selectedLevel,level,time]);
 
   // Function to start the countdown timer
   const startTimer = () => {
@@ -113,8 +123,7 @@ const TypingTestPage = () => {
     setShowResult(false);
     inputRef.current?.focus();
   };
-
-  // console.log("paragraph", paragraph);
+ 
 
   return (
     <>
@@ -196,7 +205,7 @@ const TypingTestPage = () => {
                 }}
                 className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
               >
-                Take the Quiz
+                Take Quiz
               </button>
             </div>
           </div>
@@ -206,4 +215,4 @@ const TypingTestPage = () => {
   );
 };
 
-export default TypingTestPage;
+export default Page;
