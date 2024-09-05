@@ -63,7 +63,7 @@ const Page = () => {
     <>
          <Navbar />
     
-    <main className="flex flex-col min-h-screen items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300">
+    <main className="flex flex-col min-h-[90vh] items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300">
       <h1 className="text-center text-5xl font-bold mb-8 text-purple-800 tracking-wider">
         Quiz App
       </h1>

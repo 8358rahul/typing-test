@@ -1,13 +1,15 @@
-"use client";
+'use client'
 import Navbar from "@/components/Navbar";
 import TypingParagraph from "@/components/TypingParagraph";
 import { generateParagraph } from "@/lib/generateParagraph";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 
-const Page = () => {
+
+
+const Wrapper = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
   const time = Number(searchParams.get("selectedTime"));
   const level = searchParams.get("selectedLevel") as "easy" | "medium" | "hard";
   // Refs
@@ -16,6 +18,7 @@ const Page = () => {
 
   // State variables
   const [inputValue, setInputValue] = useState<string>("");
+  const [wordCount, setWordCount] = useState<string>("");
   const [currentCharIndex, setCurrentCharIndex] = useState<number>(0);
   const [isTestActive, setIsTestActive] = useState<boolean>(false);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -34,6 +37,7 @@ const Page = () => {
     setSelectedLevel(level);
     setIsTestActive(false);
     setInputValue("");
+    setWordCount("");
     setCurrentCharIndex(0);
     clearInterval(intervalRef.current as NodeJS.Timeout);
     setTimer(time);
@@ -41,7 +45,7 @@ const Page = () => {
     setAccuracy(100);
     setShowResult(false);
     inputRef.current?.focus();
-  }, [selectedLevel,level,time]);
+  }, [selectedLevel, level, time]);
 
   // Function to start the countdown timer
   const startTimer = () => {
@@ -54,6 +58,7 @@ const Page = () => {
           setIsTestActive(false);
           setShowResult(true);
           setInputValue("");
+          setWordCount("");
           inputRef.current?.blur();
           return 0;
         }
@@ -67,54 +72,61 @@ const Page = () => {
     if (!isTestActive) {
       startTimer();
     }
-
     const value = e.target.value;
     setInputValue(value);
+    setWordCount(prev => prev + value[value.length - 1]);
     setCurrentCharIndex(value.length);
 
+  };
+ 
+
+  useEffect(() => {
     // Calculate WPM based on correct words
-    const inputWords = value.trim().split(/\s+/); // Handle multiple spaces
+    const inputWords = wordCount.trim().split(/\s+/);
     const paragraphWords = paragraph?.trim().split(/\s+/);
+
     let correctWordCount = 0;
     inputWords.forEach((word, index) => {
       if (word === paragraphWords[index]) {
         correctWordCount++;
       }
     });
-
     const timeElapsedInMinutes = timer / time;
-    const wpm = Math.round(correctWordCount / timeElapsedInMinutes);
+    const wpm = Math.round(correctWordCount / timeElapsedInMinutes); 
     setWpm(wpm);
 
     // Calculate accuracy based on correct characters
     const correctChars = paragraph
-      .slice(0, value.length)
+      .slice(0, wordCount.length)
       .split("")
-      .filter((char, index) => char === value[index]).length;
+      .filter((char, index) => char === wordCount[index]).length;
 
     const newAccuracy =
-      value.length === 0
+      wordCount.length === 0
         ? 100
-        : Math.round((correctChars / value.length) * 100);
+        : Math.round((correctChars / wordCount.length) * 100); 
     setAccuracy(newAccuracy);
-  };
+  }, [wordCount]);
 
 
 
   // Reset paragraph styling when the test ends
+
   useEffect(() => {
     if (!isTestActive && showResult) {
       setInputValue("");
+      setWordCount("");
       setCurrentCharIndex(0);
     }
   }, [isTestActive, showResult]);
 
-  const onPress = () => {
+  const loadData = () => {
     const res = generateParagraph(selectedLevel);
     setParagraph(res);
     setSelectedLevel(level);
     setIsTestActive(false);
     setInputValue("");
+    setWordCount("");
     setCurrentCharIndex(0);
     clearInterval(intervalRef.current as NodeJS.Timeout);
     setTimer(time);
@@ -123,96 +135,102 @@ const Page = () => {
     setShowResult(false);
     inputRef.current?.focus();
   };
- 
+
 
   return (
-    <>
-      <Navbar timer={timer} time={time} onPress={onPress} />
+    <main
+      className="px-60 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen"
+      onClick={() => inputRef.current?.focus()}
+    >
+      <Navbar timer={timer} time={time} onPress={loadData} />
 
-      <main
-        className="flex flex-col min-h-screen items-center px-60 bg-gradient-to-br from-gray-100 to-gray-300"
-        onClick={() => inputRef.current?.focus()}
-      >
-
-        {/* Background Image */}
-        {/* <div
-        className="absolute top-0 left-0 w-full h-full z-0 bg-cover bg-center opacity-30"
-        
-        style={{ backgroundImage: "url('/keyboard.png')",
-        // zIndex: -1,   
-        objectFit: "cover",
-
-      }}
-      /> */}
+      {/* Background Image */}
+      <div
+        className="fixed top-5 left-0 w-full h-full z-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: "url('/keyboard.png')" }}
+      />
 
 
-        <div className="relative z-10 w-full mt-3">
-          {/* Paragraph Display */}
-          {paragraph?.length > 0 ?
-            <TypingParagraph
-              paragraph={paragraph}
-              inputValue={inputValue}
-              currentCharIndex={currentCharIndex}
-              inputRef={inputRef}
-            />
-            : <div className="text-3xl font-bold text-gray-800 mb-4">Loading...</div>}
+      <div className="relative z-10 w-full mt-3">
+        {/* Paragraph Display */}
+        {paragraph?.length > 0 ?
+          <TypingParagraph
+            paragraph={paragraph}
+            inputValue={inputValue}
+            currentCharIndex={currentCharIndex}
+            inputRef={inputRef}
+            onLineCharCountChange={() => {
+              setInputValue("");
+              setCurrentCharIndex(0)
 
-          {/* Hidden Input Field */}
-          <input
-            ref={inputRef}
-            type="text"
-            className="w-0 h-0 opacity-0  "
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setInputValue(inputValue + "\n");
-              }
             }}
-            disabled={!isTestActive && timer === 0}
           />
-        </div>
+          : <div className="text-3xl font-bold text-gray-800 mb-4">Loading...</div>}
 
-        {/* Result Dialog */}
-        {showResult && ( <div className="
-          fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50
+        {/* Hidden Input Field */}
+        <input
+          ref={inputRef}
+          type="text"
+          className="w-0 h-0 opacity-0  "
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              setInputValue(inputValue + "\n");
+              setWordCount(wordCount + "\n")
+              setCurrentCharIndex(currentCharIndex + 1)
+            }
+          }}
+          disabled={!isTestActive && timer === 0}
+        />
+      </div>
 
-        "
+      {/* Result Dialog */}
+      {showResult && (<div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Typing Test Complete!
+          </h2>
+          <p className="text-gray-700 mb-2">
+            You typed the {Math.floor(time / 60)}-minute typing test.
+          </p>
+          <p className="text-gray-700 mb-4">
+            Your speed was{" "}
+            <span className="font-bold text-gray-900">{wpm} WPM</span> with an
+            accuracy of{" "}
+            <span className="font-bold text-gray-900">{accuracy}%</span>.
+          </p>
+          <button
+            onClick={() => router.back()}
+            className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all"
           >
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Typing Test Complete!
-              </h2>
-              <p className="text-gray-700 mb-2">
-                You typed the {Math.floor(time / 60)}-minute typing test.
-              </p>
-              <p className="text-gray-700 mb-4">
-                Your speed was{" "}
-                <span className="font-bold text-gray-900">{wpm} WPM</span> with an
-                accuracy of{" "}
-                <span className="font-bold text-gray-900">{accuracy}%</span>.
-              </p>
-              <button
-                onClick={() => router.back()}
-                className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all"
-              >
-                Try Again
-              </button>
-              {/* Quiz Button */}
-              <button
-                onClick={() => {
-                  router.replace("/quiz");
-                }}
-                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
-              >
-                Take Quiz
-              </button>
-            </div>
-          </div>
-        )}
-      </main>
-    </>
+            Try Again
+          </button>
+          {/* Quiz Button */}
+          <button
+            onClick={() => {
+              router.replace("/quiz");
+            }}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
+          >
+            Take Quiz
+          </button>
+        </div>
+      </div>
+      )}
+    </main>
   );
 };
 
-export default Page;
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading</div>}>
+      <Wrapper />
+    </Suspense>
+  )
+}
+
+export default Page
+

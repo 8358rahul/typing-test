@@ -10,9 +10,9 @@ const Page = () => {
 
   return (
     <main>
-      <Navbar hideBack  />
+      <Navbar />
       <div
-        className="relative flex flex-col items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300 h-[100vh]">
+        className="relative flex flex-col items-center p-10 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen">
         {/* Background Video */}
         <video
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
@@ -34,56 +34,49 @@ const Page = () => {
           <div className="h-24" />
 
           {/* Selection for Test Duration and Text Length */}
-          <div className="flex flex-col md:flex-col justify-center items-center gap-8 mb-12">
-            {/* Test Duration Selection */}
-            <div className="flex flex-col items-start">
-              <label htmlFor="test-duration" className="block text-left mb-5 text-white">Select Your Test</label>
-              <select
-                className="w-80 p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-                id="timeSelect"
-                value={selectedTime}
-                onChange={(e) => {
-                  const newTime = parseInt(e.target.value);
-                  setSelectedTime(newTime);
-                }}
-              >
-                <option value={60}>1 Minute</option>
-                <option value={120}>2 Minutes</option>
-                <option value={180}>3 Minutes</option>
-              </select>
-            </div>
+          <div className="flex flex-col md:flex-col justify-center items-center gap-8 mb-12 w-72"> 
+            <label htmlFor="test-duration" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Your Test</label>
+            <select
+              id="timeSelect"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={selectedTime}
+              onChange={(e) => {
+                const newTime = parseInt(e.target.value);
+                setSelectedTime(newTime);
+              }}
+            >
+              <option value={60} selected>1 Minute</option>
+              <option value={120}>2 Minutes</option>
+              <option value={180}>3 Minutes</option>
+            </select>
 
-            {/* Text Length Selection */}
-            <div className="flex flex-col items-start">
-              <select
-                className="w-80 p-3 bg-white border-2 border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-                id="levelSelect"
-                value={selectedLevel}
-                onChange={(e) =>
-                  setSelectedLevel(e.target.value as "easy" | "medium" | "hard")
-                }
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </div>
+            <select id="levelSelect" value={selectedLevel}
+              onChange={(e) =>
+                setSelectedLevel(e.target.value as "easy" | "medium" | "hard")
+              }
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option value="easy" selected>Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
 
+            </select>
 
           </div>
 
-          {/* Buttons */} 
-            <Link
-              href={{
-                pathname: '/home',
-                query: { selectedTime: selectedTime, selectedLevel: selectedLevel }
-              }}
-              className=" w-36 border bg-blue-800 text-white py-3  rounded-lg text-md font-semibold hover:bg-blue-700 transition-all"
-            >
-              Start Test
-            </Link>
-             
-          </div> 
+          <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"> 
+          <Link
+            href={{
+              pathname: '/home',
+              query: { selectedTime: selectedTime, selectedLevel: selectedLevel }
+            }}
+           >
+            Start Test
+          </Link>
+          </button>
+
+
+ 
+        </div>
       </div>
     </main>
 
