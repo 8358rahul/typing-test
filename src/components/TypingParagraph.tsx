@@ -1,136 +1,99 @@
-// import { generateLine } from "@/lib/generateParagraph";
-// import { useEffect, useState } from "react";
-
-// interface TypingParagraphProps {
-//     paragraph: string;
-//     inputValue: string;
-//     currentCharIndex: number;
-//     inputRef: React.RefObject<HTMLInputElement>;
-//     onLineCharCountChange?: () => void;
-//     currentLineIndex?: number;
-// }
-
-// function TypingParagraph(props: TypingParagraphProps) {
-//     const { paragraph, inputValue, currentCharIndex, inputRef, onLineCharCountChange } = props;
-//     const [lines, setLines] = useState<string[]>([""]) 
-
-//     useEffect(() => {
-//         const res = generateLine(paragraph)
-//         setLines(res) 
-//     }, [paragraph])
-
-//     useEffect(() => {
-//         const currentline = lines[0]?.length || 0;  
-//         if (currentline != 0) {
-//             if (inputValue.length === currentline) {
-//                 setLines(lines)
-//                 onLineCharCountChange?.()  
-//                 lines.shift() 
-//             }
-//         }
-
-//     }, [lines, inputValue])
-
-//     return (
-//         <div
-//             className="rounded-lg p-3 
-//               bg-gradient-to-br from-gray-50 to-gray-100 font-mono shadow-inner  
-//               max-h-96 overflow-hidden "
-//             onClick={() => inputRef.current?.focus()} 
-//         >
-//             {
-//                 lines.map((line, i) => {
-//                     return (
-//                         <div
-//                             className="
-//                             flex flex-row justify-center items-center ">
-//                             {line.split('').map((char, index) => {
-//                                 let style = 'text-gray-600 py-2 px-1  justify';
-//                                 if (i === 0) {
-//                                     if (index < currentCharIndex) {
-//                                         style = inputValue[index] === char
-//                                             ? 'bg-green-200 text-green-800 rounded px-1'
-//                                             : 'bg-red-200 text-red-800 rounded font-semibold line-through px-1';
-//                                     } else if (index === currentCharIndex) {
-//                                         style = 'text-blue-500 font-bold px-1 underline';
-//                                     }
-
-//                                 }
+import { useCallback, useEffect, useRef } from "react";
+import GraphemeSplitter from "grapheme-splitter";
 
 
-//                                 return (
-//                                     <span
-//                                         key={index}
-//                                         className={`${style} inline-block text-3xl w-5 `}
-//                                         style={{ userSelect: 'none', borderBottomWidth: '1px', }}
-//                                     >
-//                                         {char === ' ' ? '\u00A0' : char}
-//                                     </span>
-//                                 );
-//                             })}
-//                         </div>
-//                     )
 
-//                 })
-//             }  
-//         </div>
-//     );
-// }
-
-// export default TypingParagraph
-
-
-import { generateLine } from "@/lib/generateParagraph";
-import { useEffect, useState } from "react";
+const splitter = new GraphemeSplitter();
 
 interface TypingParagraphProps {
-    paragraph: string;
+    lines: string[];
     inputValue: string;
     currentCharIndex: number;
     inputRef: React.RefObject<HTMLInputElement>;
-    onLineCharCountChange?: () => void;
+    currentLineIndex: number;
+    fontStyle: string;
 }
 
-function TypingParagraph({ paragraph, inputValue, currentCharIndex, inputRef, onLineCharCountChange }: TypingParagraphProps) {
-    const [lines, setLines] = useState<string[]>([""]);
+function TypingParagraph({ lines, inputValue, currentCharIndex, inputRef, currentLineIndex,fontStyle }: TypingParagraphProps) {
 
-    useEffect(() => {
-        const res = generateLine(paragraph);
-        setLines(res);
-    }, [paragraph]);
-
-    useEffect(() => {
-        const currentlineLength = lines[0]?.length || 0;
-        if (currentlineLength !== 0 && inputValue.length === currentlineLength) {
-            onLineCharCountChange?.();
-            setLines((prevLines) => prevLines.slice(1));
+    const containerRef = useRef<HTMLDivElement>(null); // Ref for the container to handle scroll 
+  const fStyle = fontStyle==="Noto Sans Devanagari"?true:false;
+    // useCallback to handle smooth scrolling to the current line
+    const scrollToCurrentLine = useCallback(() => {
+      if (containerRef.current && lines[currentLineIndex]) {
+        const lineElement = containerRef.current.children[
+          currentLineIndex
+        ] as HTMLElement;
+        if (lineElement) {
+          containerRef.current.scrollTo({
+            top: lineElement.offsetTop,
+            behavior: "smooth",
+          });
         }
-    }, [lines, inputValue]);
-
+      }
+    }, [currentLineIndex, lines]);
+  
+    // Disable manual scrolling with mouse wheel or touch
+    useEffect(() => {
+      const container = containerRef.current;
+  
+      if (container) {
+        const disableScroll = (e: Event) => e.preventDefault();
+  
+        // Prevent scrolling manually via mouse wheel
+        container.addEventListener("wheel", disableScroll, { passive: false });
+  
+        // Prevent scrolling manually via touch gestures
+        container.addEventListener("touchmove", disableScroll, { passive: false });
+  
+        // Cleanup event listeners
+        return () => {
+          container.removeEventListener("wheel", disableScroll);
+          container.removeEventListener("touchmove", disableScroll);
+        };
+      }
+    }, []);
+  
+    useEffect(() => {
+      scrollToCurrentLine(); // Auto-scroll only when the user types
+    }, [scrollToCurrentLine, inputValue]);
     return (
         <div
-            className="rounded-lg p-3 bg-gradient-to-br from-gray-50 to-gray-100 font-mono shadow-inner max-h-96 overflow-hidden" onClick={() => inputRef.current?.focus()}>
-            {lines.map((line, i) => (
+            ref={containerRef}
+            className={`rounded-lg p-3 bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner max-h-96 overflow-y-auto scrollbar-hide ${fontStyle}`} onClick={() => inputRef.current?.focus()}>
+            {lines.map((line, i) => { 
+              
+              const graphemes = fStyle? splitter.splitGraphemes(line):line.split("");
+
+            return(
                 <div key={i} className="flex flex-row justify-center items-center">
-                    {line.split("").map((char, index) => {
-                        let style = "text-gray-600 py-2 px-1 justify";
-                        if (i === 0) {
+                    {graphemes.map((char, index) => { 
+                        let style = "text-gray-600 py-2 px-1 justify font-semibold";
+                        if (i === currentLineIndex) {
                             if (index < currentCharIndex) {
-                                style = inputValue[index] === char ? "bg-green-200 text-green-800 rounded px-1" : "bg-red-200 text-red-800 rounded font-semibold line-through px-1";
+                                style = inputValue[index] === char ? "bg-green-200 text-green-800 rounded px-1" : "bg-red-200 text-red-800 rounded line-through px-1";
                             } else if (index === currentCharIndex) {
-                                style = "text-blue-500 font-bold px-1 underline border-b";
+                                style = "text-blue-500 font-bold px-1";
                             }
-                        }
+                        } 
+
                         return (
                             <span key={index}
-                                className={`${style}inline-block text-2xl w-5 select-none  `} 
+                                className={`${style} ${fStyle?"w-8":"w-5"} inline-block text-3xl select-none`}
+                                style={{
+                                  userSelect: 'none',
+                                   borderBottomWidth: '1px',
+                                   scrollbarWidth: 'none', 
+                                   }}
                             >
-                                {char} 
+                                {char === ' ' ? '\u00A0' : char}
                             </span>
                         );
                     })}
                 </div>
-            ))}
+            )
+            
+            })}
         </div>
     );
 }

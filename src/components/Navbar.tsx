@@ -18,7 +18,7 @@ export default function Navbar({ timer, time, onPress }: NavbarProps) {
     <nav className="bg-white border-gray-200 dark:bg-gray-900 w-full">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-2">
         <button 
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
         className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="logo.png" className="h-6" alt="Flowbite Logo" />
           <span className="self-center text-1xl font-semibold whitespace-nowrap dark:text-white">Typing Test</span>
