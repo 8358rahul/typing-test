@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 const Page = () => {
   const [selectedTime, setSelectedTime] = useState<number>(60);
   const [selectedLevel, setSelectedLevel] = useState<"easy" | "medium" | "hard">("easy");
-  const [selectedLanguage, setSelectedLanguage] = useState<"english" | "hindi">("english");
+  const [selectedLanguage, setSelectedLanguage] = useState<"english" | "hindi">("english"); 
 
 
   return (
@@ -77,7 +77,7 @@ const Page = () => {
                 <option value="english">English</option>
                 <option value="hindi">Hindi</option>
               </select>
-            </div>
+            </div> 
           </div>
 
           <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">

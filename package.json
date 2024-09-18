@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ai": "^3.3.35",
     "grapheme-splitter": "^1.0.4",
     "next": "14.2.7",
+    "openai": "^4.60.0",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-scrollbar-hide": "^1.1.7"
