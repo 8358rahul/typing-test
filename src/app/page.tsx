@@ -104,48 +104,50 @@ const Page = () => {
 
 
 
-          {selectedLanguage == "hindi" && (<div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Please type the word &quot;नमस्ते&quot; to verify the Hindi keyboard layout</h3>
-
-              <div className="grid gap-4 mb-4 grid-cols-2">
-                <div className="col-span-2">
-                  <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                  <textarea value={inputValue} onChange={handleInput} id="description" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="type here.."></textarea>
-                </div>
-              </div>
-              <p className=" ">To test, press <strong>Windows + Space</strong></p>
-              <a
-                href="https://support.microsoft.com/en-us/help/4027670/windows-10-add-and-switch-input-and-display-language-preferences"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline mt-2 underline"
-              >
-                Download Hindi Language Pack
-              </a> 
+          {selectedLanguage == "hindi" && ( 
+            <div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+              <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Please type the word &quot;नमस्ते&quot; to verify the Hindi keyboard layout</h3>
+                <p  className="">To test, press <strong>Windows + Space</strong></p>
                 <Link
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  href="https://support.microsoft.com/en-us/help/4027670/windows-10-add-and-switch-input-and-display-language-preferences"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline" 
+                > 
+                Learn more
+                </Link>
+                  <div className="col-span-2 mb-6">
+                    <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
+                    <textarea value={inputValue} onChange={handleInput} id="description" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="type here.."></textarea>
+                  </div> 
+                <Link
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                   href={{
                     pathname: '/home',
                     query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
                   }}
                 >
                   Start Test
-                </Link> 
+                </Link>
+
+
+
+
+               
+              </div>
             </div>
 
-          </div>
-
-          )} 
-            <Link
+          )}
+          <Link
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              href={{
-                pathname: '/home',
-                query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
-              }}
-            >
-              Start Test
-            </Link> 
+            href={{
+              pathname: '/home',
+              query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
+            }}
+          >
+            Start Test
+          </Link>
         </div>
       </div>
 

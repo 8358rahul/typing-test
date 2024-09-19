@@ -21,7 +21,10 @@ export default function Navbar({ timer, time, onPress }: NavbarProps) {
         <button 
           onClick={() => router.push("/")}
         className="flex items-center space-x-3 rtl:space-x-reverse">
-          <Image src="logo.png" className="h-6" alt="Flowbite Logo" />
+          <Image src="/logo.png" alt="Flowbite Logo" 
+            width={24}
+            height={24}
+          />
           <span className="self-center text-1xl font-semibold whitespace-nowrap dark:text-white">Typing Test</span>
         </button>
         <span className="self-center  whitespace-nowrap dark:text-white">
