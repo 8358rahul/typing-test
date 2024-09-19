@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -20,7 +21,7 @@ export default function Navbar({ timer, time, onPress }: NavbarProps) {
         <button 
           onClick={() => router.push("/")}
         className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="logo.png" className="h-6" alt="Flowbite Logo" />
+          <Image src="logo.png" className="h-6" alt="Flowbite Logo" />
           <span className="self-center text-1xl font-semibold whitespace-nowrap dark:text-white">Typing Test</span>
         </button>
         <span className="self-center  whitespace-nowrap dark:text-white">

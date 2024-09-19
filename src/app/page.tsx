@@ -56,8 +56,8 @@ const Page = () => {
 
           {/* Selection for Test Duration and Text Length */}
           <div className="flex flex-col md:flex-col justify-center items-center gap-8 mb-12 w-full">
-            <div className="w-72">
-              <label htmlFor="test-duration" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white  ">Duration</label>
+            <div className="w-72 flex flex-col items-start ">
+              <label htmlFor="test-duration" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ml-2">Duration</label>
               <select
                 id="timeSelect"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -72,8 +72,8 @@ const Page = () => {
                 <option value={180}>3 Minutes</option>
               </select>
             </div>
-            <div className="w-72">
-              <label htmlFor="test-duration" className="item-start text-sm font-medium text-gray-900 dark:text-white">Level</label>
+            <div className="w-72 flex flex-col items-start">
+              <label htmlFor="test-duration" className="item-start text-sm font-medium text-gray-900 dark:text-white ml-2">Level</label>
               <select
                 id="levelSelect"
                 value={selectedLevel}
@@ -86,14 +86,14 @@ const Page = () => {
                 <option value="hard">Hard</option>
               </select>
             </div>
-            <div className="w-72">
-              <label htmlFor="test-duration" className="item-start text-sm font-medium text-gray-900 dark:text-white">Language</label>
+            <div className="w-72 flex flex-col items-start">
+              <label htmlFor="test-duration" className="item-start text-sm font-medium text-gray-900 dark:text-white ml-2">Language</label>
               <select
                 id="languageSelect"
                 value={selectedLanguage}
                 onChange={(e) =>
                   setSelectedLanguage(e.target.value as "hindi" | "english")
-                } 
+                }
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="english">English</option>
                 <option value="hindi">Hindi</option>
@@ -104,16 +104,16 @@ const Page = () => {
 
 
 
-          {selectedLanguage == "hindi" && ( <div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                  <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4">Please type the word "नमस्ते" to verify the Hindi keyboard layout:</h3>
-              
+          {selectedLanguage == "hindi" && (<div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Please type the word &quot;नमस्ते&quot; to verify the Hindi keyboard layout</h3>
+
               <div className="grid gap-4 mb-4 grid-cols-2">
-                  <div className="col-span-2">
-                    <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                    <textarea  value={inputValue} onChange={handleInput}  id="description" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="type here.."></textarea>
-                  </div>
-                </div> 
+                <div className="col-span-2">
+                  <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
+                  <textarea value={inputValue} onChange={handleInput} id="description" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="type here.."></textarea>
+                </div>
+              </div>
               <p className=" ">To test, press <strong>Windows + Space</strong></p>
               <a
                 href="https://support.microsoft.com/en-us/help/4027670/windows-10-add-and-switch-input-and-display-language-preferences"
@@ -122,38 +122,36 @@ const Page = () => {
                 className="text-blue-600 hover:underline mt-2 underline"
               >
                 Download Hindi Language Pack
-              </a>
-              <button type="button" className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <Link
-              href={{
-                pathname: '/home',
-                query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
-              }}
-            > 
-              Start Test
-            </Link>
-          </button>
+              </a> 
+                <Link
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  href={{
+                    pathname: '/home',
+                    query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
+                  }}
+                >
+                  Start Test
+                </Link> 
             </div>
-            
-            </div>   
 
-)}
-          <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          </div>
+
+          )} 
             <Link
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
               href={{
                 pathname: '/home',
                 query: { selectedTime: selectedTime, selectedLevel: selectedLevel, selectedLanguage: selectedLanguage }
               }}
             >
               Start Test
-            </Link>
-          </button>
+            </Link> 
         </div>
       </div>
-      
 
-      
-    
+
+
+
     </main>
   )
 

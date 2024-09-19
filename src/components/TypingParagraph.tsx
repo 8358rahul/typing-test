@@ -100,7 +100,7 @@ function TypingParagraph({ lines, inputValue, currentCharIndex, inputRef, curren
 
               return (
                 <span key={index}
-                  className={`${style} inline-block text-3xl select-none`}
+                  className={`${style} inline-block text-[4vh] select-none`}
                   style={{
                     userSelect: 'none',
                     borderBottomWidth: '1px',

@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import TypingParagraph from "@/components/TypingParagraph";
 import { generateLine, generateParagraph } from "@/utils/generateParagraph";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, useEffect, useRef, Suspense, KeyboardEvent } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import GraphemeSplitter from "grapheme-splitter";
 
 
@@ -54,7 +54,7 @@ const Wrapper = () => {
       // Set the flag to true to prevent future dispatches
       isEventDispatched.current = true;
     }
-  }, [level, time, language]);
+  }, [level, time, language,]);
 
 
 
@@ -84,8 +84,7 @@ const Wrapper = () => {
 
     setCurrentCharIndex(temp.length);
 
-    calculateResults();
-    console.log("value", value);
+    calculateResults(); 
 
     if (!isTestActive) startTimer(); 
     if (temp.length === lines[currentLineIndex].length) {
@@ -169,7 +168,7 @@ const Wrapper = () => {
 
   return (
     <main className={'px-60 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen'} onClick={() => inputRef.current?.focus()}>
-      <Navbar timer={timer} time={time} onPress={resetTest} />
+      <Navbar timer={timer} time={time} onPress={()=>resetTest()} />
       <div className="fixed top-5 left-0 w-full h-full z-0 bg-cover bg-center bg-no-repeat opacity-30" style={{ backgroundImage: "url('/keyboard.png')" }} />
   
         

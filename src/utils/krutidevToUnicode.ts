@@ -1,8 +1,8 @@
-// utils/krutidevToUnicode.ts
+ 
 export const convertKrutidevToUnicode = (krutidevInput: string): string => {
     // Simplified example of Krutidev to Unicode mapping
     
-    const mapping = {
+    const mapping: { [key: string]: string } = {
       'd': 'क', // Krutidev 'd' to Unicode 'क'
       'k': 'ा', // Krutidev 'k' to Unicode 'ा'
       // Add more mappings as per the full Krutidev to Unicode table
