@@ -39,7 +39,7 @@ const Wrapper = () => {
   const [accuracy, setAccuracy] = useState<number>(100);
   const [timer, setTimer] = useState<number>(time);
   const [paragraph, setParagraph] = useState<string>("");
-  const [lines, setLines] = useState<string[]>([""]); 
+  const [lines, setLines] = useState<string[]>([""]);  
 
   const isEventDispatched = useRef(false);
 
@@ -65,7 +65,7 @@ const Wrapper = () => {
     intervalRef.current = setInterval(() => {
       setTimer((prevTime) => {
         if (prevTime === 1) {  
-          clearInterval(intervalRef.current as NodeJS.Timeout);
+          clearInterval(intervalRef.current as NodeJS.Timeout); 
           endTest();
           return 0;
         }
@@ -74,59 +74,52 @@ const Wrapper = () => {
     }, 1000);
   };
 
-
-
+  
 
   // Handle user input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { 
     const value = e.target.value;
     setInputValue(value);
-    setCurrentCharIndex(splitter.splitGraphemes(value).length);
+    const temp =language=='hindi'? splitter.splitGraphemes(value):value;
+
+    setCurrentCharIndex(temp.length);
+
+    calculateResults();
     console.log("value", value);
 
     if (!isTestActive) startTimer(); 
-    if (value.length === lines[currentLineIndex].length) {
+    if (temp.length === lines[currentLineIndex].length) {
       setInputValue("");
       setCurrentLineIndex((prevIndex) => prevIndex + 1);
       setCurrentCharIndex(0);
-      calculateResults();
     }
-    if (value.length > lines[currentLineIndex].length) {
-      return;  
-    }
+     
   };
 
 
   const calculateResults = () => {
-    const allTypedInput = lines.slice(0, currentLineIndex).join(" ") + " " + inputValue.trim();
-    console.log("allTypedInput", allTypedInput);
+    const allTypedInput = lines.slice(0, currentLineIndex).join(" ") + " " + inputValue.trim(); 
     const inputWords = allTypedInput?.trim().split(/\s+/);
     const paragraphWords = paragraph?.trim().split(/\s+/);
-
-    console.log("inputWords", inputWords);
-    console.log("paragraphWords", paragraphWords);
+    
+ 
     let correctWordCount = 0;
     let inCorrectWordCount = 0;
-
-    inputWords.forEach((word, index) => {
-      const isEnglish = /^[a-zA-Z]/.test(word);
-      if (isEnglish) {
-      if (word?.toLowerCase() === paragraphWords[index]?.toLowerCase()) {
-        correctWordCount++;
-      } else {
-        inCorrectWordCount++;
-      }
-    } else {
+ 
+    
+    inputWords.forEach((word, index) => { 
+      console.log('word',word);
+      console.log('paragraphWords[index]',paragraphWords[index]);
       if (word === paragraphWords[index]) {
         correctWordCount++;
       } else {
         inCorrectWordCount++;
-      }
-    }
-    });
+      } 
+    }); 
 
-    console.log("correctWordCount", correctWordCount);
-    console.log("inCorrectWordCount", inCorrectWordCount);
+    // console.log('correctWordCount',correctWordCount);
+    // console.log('inCorrectWordCount',inCorrectWordCount);
+ 
 
     // Calculate WPM based on correct words  
     const newWpm = Math.round(correctWordCount / timeInMinutes);
@@ -149,7 +142,6 @@ const Wrapper = () => {
 
   // End the test
   const endTest = () => {
-    clearInterval(intervalRef.current as NodeJS.Timeout);
     setIsTestActive(false);
     setShowResult(true);
     inputRef.current?.blur();
@@ -173,15 +165,14 @@ const Wrapper = () => {
     setAccuracy(100);
     setShowResult(false);
     inputRef.current?.focus();
-  };
-  
-  
+  }; 
 
   return (
-    <main className={`px-60 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen`} onClick={() => inputRef.current?.focus()}>
+    <main className={'px-60 bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen'} onClick={() => inputRef.current?.focus()}>
       <Navbar timer={timer} time={time} onPress={resetTest} />
       <div className="fixed top-5 left-0 w-full h-full z-0 bg-cover bg-center bg-no-repeat opacity-30" style={{ backgroundImage: "url('/keyboard.png')" }} />
-        <h1>{`Shift D, V , F , N , V , S ,Shift S, K , Shift K, G , Shift M, R, M, S, Shift G,M,S`}</h1>
+  
+        
       <div className="relative z-10 w-full mt-9">
         {/* Paragraph Display */}
         {lines?.length > 0 ? (
